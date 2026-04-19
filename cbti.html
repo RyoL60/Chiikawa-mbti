@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XBTI 人格测试</title>
+</head>
+<body>
+<script>
+var CONFIG = {
+  title: 'CBTI 人格测试',
+  subtitle: '你是《吉伊卡哇》里的哪个小可爱？',
+
+  // 17种角色类型
+  types: {
+    CHIIKAWA: { name: '吉伊 (Chiikawa)',   
+    img: 'https://raw.githubusercontent.com/RyoL60/Chiikawa-mbti/main/pic/Chiikawa.jpg', // 这里放入图片的 URL
+  quote: '羊粑粑~噜啦啦~', // 这里放你想显示的台词
+  emoji: '', // 原有的 emoji 可以留空
+   color: '#8a8a8a', 
+   bg: '#ffffff',
+      slogan: '脆弱是我的勋章，坚持是我的信仰。',
+      desc: '你是这个世界里最柔软的纯白。你是个典型的感性灵魂，情绪写在脸上，面对未知的恐惧时会忍不住颤抖哭泣。但这种脆弱并非软弱，而是一种极致的真诚。你会为了保护同伴，在最危险的时刻挥动讨伐棒；即使五级除草考试屡战屡败，你依然会在哭过之后重新翻开那本破旧的参考书。你代表了人性中那股“即使世界充满恶意，也要笨拙地保持善良”的孤勇，是即便深陷泥沼也要仰望星空的理想主义者。',
+      weights: { S1:-2, E2:3, A1:2, Ac1:-1, So1:-2 } },
+
+     HACHIWARE: { 
+  name: '小八 (Hachiware)', 
+    img: 'https://raw.githubusercontent.com/RyoL60/Chiikawa-mbti/main/pic/Hachiware.jpg', // 这里放入图片的 URL
+  quote: '曾曾哇嘎乃', // 这里放你想显示的台词
+  emoji: '', // 原有的 emoji 可以留空
+  color: '#8a8a8a', 
+  bg: '#ffffff',
+      slogan: '“总会有办法的”，是给世界的温柔暗示。',
+      desc: '你是那个生活在漏风洞穴里，却能把裂口的拉面碗看作生活情趣的乐观主义者。你拥有惊人的共情能力和社交天赋，总能在尴尬的沉默中找到话题，成为团队的粘合剂。当你为了朋友的失败而心痛，甚至盖过对自己成功的喜悦时，你展现出了灵魂中最温厚的一面 [cite: 448, 452]。你相信逻辑、相信努力、相信“明天会更好”。你的人格镜像是一种强大的精神利他主义，能将生活的艰辛转化为微小但确定的幸福。',
+      weights: { So1:3, E2:3, S3:2, A1:2, So3:2 } },
+
+    USAGI: { name: '乌萨奇 (Usagi)', emoji: '🐰', color: '#8a8a8a', bg: '#ffffff',
+      img: 'https://raw.githubusercontent.com/RyoL60/Chiikawa-mbti/main/pic/Usagi.jpg',
+      quote: '乌拉呀哈~呀哈乌拉~',
+      slogan: '自由无需解释，行动就是我的语言。',
+      desc: '你是一个无法被定义的“混沌个体”。你无视常规、无视考试、甚至无视语言，只用本能和怪叫与世界沟通。你拥有极其强悍的生存本领，在高难度的讨伐中表现得游刃有余，是天生的行动派。你的人格镜像是一种极致的“自由意志”——不向社会规则低头，不向群体压力妥协。在别人还在为绩点和身份焦虑时，你已经跑向了下一个未知的冒险点。你是那种即便世界明天毁灭，今天也要大声喊出“呀哈”的终极潇洒。',
+      weights: { A2:-3, Ac2:3, So1:2, S1:3, Ac3:3 } },
+
+    MOMONGA: { name: '飞鼠 (Momonga)', emoji: '🐿️', color: '#8a8a8a', bg: '#ffffff',
+      img: 'https://raw.githubusercontent.com/RyoL60/Chiikawa-mbti/main/pic/Momonga.jpg',
+      quote: '米蝶~~~~~~',
+      slogan: '索取与表演，是我对抗现实的防御机制。',
+      desc: '你渴望被爱，甚至到了偏执的程度。你沉迷于展示自己的可爱，并以此作为索取资源的筹码。然而，在浮夸的表演欲下，其实隐藏着一种深刻的身份焦虑——正如传闻中交换了灵魂的设定，你可能也在现实中扮演着一个并非真实自我的角色。你聪明、狡黠，懂得如何调动周围的情绪，但内心深处又害怕一旦揭下可爱的假面，就会失去现有的避风港。你的人格镜像代表了那些在社会面具下挣扎，极度缺乏安全感却又倔强求生的灵魂。',
+      weights: { So1:3, So3:3, A2:-2, S2:-1, E3:2 } },
+
+    RAKKO: { name: '师父 (Rakko)', emoji: '🦦', color: '#8a8a8a', bg: '#ffffff',
+      img: 'https://raw.githubusercontent.com/RyoL60/Chiikawa-mbti/main/pic/Rakko.jpg',
+      quote: '一起变强吧！',
+      slogan: '强大的巅峰之后，是无人知晓的温柔软肋。',
+      desc: '你是众人的灯塔，那个站在讨伐榜单顶端的“英雄”。你习惯了被仰望，习惯了背负导师的职责去引导后辈。然而，长时间的紧绷让你渴望偶尔的逃离——所以你会在深夜独自驾车去偏远的甜品店，在奶油与糖分中短暂地做回那个普通的小生物。你的人格镜像是一种“成熟的自律”，你明白力量是为了守护，而守护也包括守护好自己内心那一块尚未崩坏的、对生活的热爱。',
+      weights: { Ac1:3, A2:3, S3:3, E2:1, S1:3 } },
+
+    KURIMANJU: { name: '栗子馒头 (Kurimanju)', emoji: '🌰', color: '#8a8a8a', bg: '#ffffff',
+      img: 'https://raw.githubusercontent.com/RyoL60/Chiikawa-mbti/main/pic/Kurimanju.jpg',
+      quote: '哈！！',
+      slogan: '生活没有标准答案，我只喝自己这杯酒。',
+      desc: '你是大隐隐于市的智者，对内卷和阶级跃升有着一种天然的免疫力。你冷眼旁观世界的混乱，只在美食与美酒入口的那一刻，发出那声标志性的感叹。你虽然看起来孤僻、不好惹，但其实拥有非常细腻的同情心，会在后辈困惑时默默递上一杯热饮。你的人格镜像代表了“通透的享乐主义”：在残酷的生存规则面前，不去死磕，而是选择与自己和解，在有限的生命里寻找最饱和的感官体验。',
+      weights: { So1:-2, Ac3:-1, A2:-2, S2:2, E3:2 } },
+
+    KANI: { name: '古本 (Kani)', emoji: '🦀', color: '#8a8a8a', bg: '#ffffff',
+      img: 'https://raw.githubusercontent.com/RyoL60/Chiikawa-mbti/main/pic/Kani.jpg',
+      quote: '',
+      slogan: '博学与沉默，是我守护你的独特姿态。',
+      desc: '你是那个安于角落、在旧书中寻找真理的宁静灵魂。你极具包容力，即便身边的伙伴（如飞鼠）无理取闹，你也会用温柔的逻辑去安抚，而非针锋相对。你拥有一种“退后的力量”，不争抢聚光灯，却总能洞察世界的规律。你的人格镜像代表了那些博学且充满慈悲的观察者——你深知世界的真相往往是悲凉的，所以你选择用知识去武装内心，用沉默去包容他人的任性。',
+      weights: { E2:3, A1:2, So3:2, S2:2, Ac1:-1 } },
+
+    SHISA: { name: '师萨 (Shisa)', emoji: '🦁', color: '#8a8a8a', bg: '#ffffff',
+      img: 'https://raw.githubusercontent.com/RyoL60/Chiikawa-mbti/main/pic/Shisa.jpg',
+      quote: '',
+      slogan: '以勤恳之名，敲开通往理想世界的大门。',
+      desc: '你是最典型的“社会努力家”。为了获得一个认可的身份，你可以不分昼夜地钻研复杂的点餐系统或证书考试。你极度崇拜某种秩序或匠人精神，对于“师傅”这个词有着近乎神圣的敬畏。你的人格镜像代表了那些渴望通过自身奋斗实现阶级跃迁的人，虽然有时会显得过于紧绷，但那种对生活的热情和对职人规则的尊重，让你在乱世中拥有一种难得的秩序感和归属感。',
+      weights: { A2:3, Ac1:3, E2:2, So3:1, S3:2 } },
+
+    BEETLE: { name: '独角仙', emoji: '🪲', color: '#8a8a8a', bg: '#ffffff',
+      img: 'https://raw.githubusercontent.com/RyoL60/Chiikawa-mbti/main/pic/Beetle.jpg',
+      quote: '',
+      slogan: '纯粹的恶意，往往披着最无害的外衣。',
+      desc: '你象征着人性中最迷离、最难以控制的原始冲动。你可能在这一秒是撒娇的小可爱，下一秒就变异成不可名状的力量。你的人格镜像反映了那些潜伏在内心深处、不被规则约束的野性。你不是坏，你只是“不受限”。你的存在提醒着周围的人：可爱并非软弱的代名词，在极致的温顺背后，可能藏着足以颠覆一切的能量。',
+      weights: { So1:3, A2:-3, E1:-2, Ac2:2 } },
+
+    POCHETTE_YOROI: { name: '手工铠 (Pochette Yoroi)', emoji: '🧶', color: '#8a8a8a', bg: '#ffffff',
+      img: 'https://raw.githubusercontent.com/RyoL60/Chiikawa-mbti/main/pic/PochetteYoroi.jpg',
+      quote: '这个样品，你们穿一下吧',
+      slogan: '在冰冷的盔甲下，编织最温暖的梦。',
+      desc: '你身处冰冷的规则体系内，却拥有一颗对“美”极其敏感的心。你不满于只是分配繁琐的劳动，更愿意去创作那些能给人带来笑容的小物件。你的人格镜像代表了那些在枯燥的职业生涯中，依然坚持个人爱好与浪漫的人。你懂得欣赏每一种微小的努力，并试图用自己的温柔去软化那套生硬的生存法则。你是一个在制度缝隙里种花的人。',
+      weights: { E2:2, So3:2, A1:2, Ac3:2 } },
+
+    LABOR_YOROI: { name: '劳动铠 (Labor Yoroi)', emoji: '📝', color: '#8a8a8a', bg: '#ffffff',
+      img: 'https://raw.githubusercontent.com/RyoL60/Chiikawa-mbti/main/pic/LaborYoroi.jpg',
+      quote: '唔，唔哇哇唔哇',
+      slogan: '清醒的管理者，冷眼看尽众生浮沉。',
+      desc: '你是一个高度理性且客观的执行者。你负责分配除草任务、核实资格证，维持着这个世界的基本运转。看多了变异、牺牲和阶级淘汰，你学会了用职业化的冷淡来掩饰内心的波澜。你的人格镜像代表了那些身处高压职场、必须时刻保持专业与理智的人。虽然你看起来不近人情，但只有你知道，这种秩序才是对弱小生命最大的保护。',
+      weights: { A2:3, Ac2:2, E3:3, S2:2 } },
+
+    RAMEN_YOROI: { name: '拉面铠 (Ramen Yoroi)', emoji: '🍜', color: '#8a8a8a', bg: '#ffffff',
+      img: 'https://raw.githubusercontent.com/RyoL60/Chiikawa-mbti/main/pic/RamenYoroi.jpg',
+      quote: '今天也要加油哦！',
+      slogan: '每一碗面里，都藏着对规则的终极敬畏。',
+      desc: '你是一个严谨甚至有些偏执的职人。你不仅经营着拉面馆，更是在经营一种名为“尊严”的仪式感 。你的人格镜像反映了那些在细分领域追求极致的人——你可能对流程细节非常苛刻，点餐暗号错一个音都不行，但那是因为你深知只有经得起考验的规则，才能在这荒诞的世界里撑起一片属于奋斗者的避难所。',
+      weights: { A2:3, Ac1:2, S3:2, So1:1 } },
+
+    DAQIANG: { name: '大强 (Large Chimera)', emoji: '👹', color: '#8a8a8a', bg: '#ffffff',
+      img: 'https://raw.githubusercontent.com/RyoL60/Chiikawa-mbti/main/pic/Daqiang.jpg',
+      quote: '不想做那种事……',
+      slogan: '变异是对过去身份最沉重的告别。',
+      desc: '你曾是拼命除草、努力工作的一员，但最终却因某些无法言说的压力或突如其来的厄运而“变异”了。虽然外壳变得狰狞，但你依然保留着过去的一丝记忆和对友谊的眷恋。你的人格镜像代表了那些被现实生活重创、被迫改变初衷甚至性格的人。你是一个悲伤的幸存者，用另一种残酷的方式在世界尽头苟活着。',
+      weights: { S1:-3, S2:-2, A3:-2, E1:-3 } },
+
+    ANOKO: { name: '那孩子 (Anoko)', emoji: '🧚', color: '#8a8a8a', bg: '#ffffff',
+      img: 'https://raw.githubusercontent.com/RyoL60/Chiikawa-mbti/main/pic/Anoko.jpg',
+      quote: '',
+      slogan: '如果弱小是罪，那我宁愿拥抱邪恶的强大。',
+      desc: '你通过某种惊心动魄的方式完成了从“被狩猎者”到“狩猎者”的转变。你不再满足于微薄的报酬，而是追求绝对的控制与力量。你的人格镜像代表了那些因对弱小感到绝望而觉醒的叛逆者——既然规则无法保护我，那我就成为规则的破坏者。你巨大的身躯冷笑着，俯视着那些曾经的“同类”。',
+      weights: { S1:3, S3:-2, E3:3, A1:-2 } },
+
+    NAGANO: { name: 'Nagano (作者)', emoji: '✏️', color: '#8a8a8a', bg: '#ffffff',
+      img: 'https://raw.githubusercontent.com/RyoL60/Chiikawa-mbti/main/pic/Nagano.jpg',
+      quote: '',
+      slogan: '我是世界的编剧，在糖果纸里包藏尖刀。',
+      desc: '你拥有上帝视角的冷静与慈悲。你亲手创造了这些可爱的小生物，但也亲手设定了残酷的变异规则和等级森严的社会制度 。你的人格镜像代表了那些看透了社会本质，却依然愿意用温柔的笔触去记录这一切的人。你从不掩饰丑恶，也不夸大美好，你只是如实地展示：在这个疯狂的宇宙里，友谊与恶意是如何共生交响的。',
+      weights: { S2:3, A3:3, THINK:3, So3:-1 } },
+
+    STAR: { name: '流星 (Star)', emoji: '💫', color: '#8a8a8a', bg: '#ffffff',
+      img: 'https://raw.githubusercontent.com/RyoL60/Chiikawa-mbti/main/pic/Star.jpg',
+      quote: '流星 参上！',
+      slogan: '奇迹的发生，往往以平静的消失为代价。',
+      desc: '你代表了命运中那些不可控的、超越逻辑的力量。你被众人祈祷，却也被众人畏惧。你实现愿望，同时也可能带走最珍贵的东西。你的人格镜像是一种“必然的偶然性”——你的一举一动都可能重塑他人的命运，你不需要共情，因为你本身就是因果链条中最神秘的一环。',
+      weights: { A2:-3, E1:-2, Ac2:1, S3:-1 } }
+  },
+
+  dims: {
+    // 维度名和描述也进行了深度定制
+    S1: { name: '精神内核', group: 'S', L: '吉伊式的不安与自省（极度共情但也易碎）', M: '在努力与焦虑间徘徊的普通职员', H: '乌萨奇式的自我肯定（完全不在乎外界评价）' },
+    S2: { name: '真实镜像', group: 'S', L: '面具感较强（为了融入不惜扮演另一个自己）', M: '在社会期许与本真之间反复横跳', H: '极度清晰的自我意识（Nagano式上帝视角）' },
+    S3: { name: '世俗动力', group: 'S', L: '彻底躺平（只要有吃的万事皆休）', M: '努力考试提升地位（坚信证书能改变命运）', H: '立志成为顶级英雄（追求巅峰荣誉）' },
+    E1: { name: '情感防线', group: 'E', L: '变异恐惧症（时刻担心失去现有的一切）', M: '在稳定的契约中寻求安全感', H: '独处也感到安宁（独自生活在洞穴的自由）' },
+    E2: { name: '共情深度', group: 'E', L: '职业化克制（只分配任务，不流露私情）', M: '平等的陪伴与交换', H: '无私的利他精神（为同伴的失败而哭泣）' },
+    E3: { name: '精神独立', group: 'E', L: '群体依赖症（没有同伴就无法行动）', M: '亲密但不失独立（可随时切换独处模式）', H: '不需要他人定义的自由（哪怕是飞翔在异界）' },
+    A1: { name: '生存底色', group: 'A', L: '世界是充满怪物的森林（生存即讨伐）', M: '随遇而安（哪里的喷泉出米饭我就去哪）', H: '相信无限涌出的奇迹（理想主义色彩浓厚）' },
+    A2: { name: '规制认同', group: 'A', L: '秩序的破坏者（呀哈！规则就是用来怪叫的）', M: '守法的劳动者（按部就班贴贴纸）', H: '极度尊重流程的职人（点餐暗号是神圣的）' },
+    A3: { name: '存在意义', group: 'A', L: '意义是生存的枷锁（能填饱肚子就行）', M: '在小事中获取满足（吃拉面就是英雄时刻）', H: '拥有宏大的生命叙事（改写世界的命运）' },
+    Ac1: { name: '核心动机', group: 'Ac', L: '避灾与避战', M: '获取物质奖励（为了买心仪的挎包）', H: '追求荣誉与职业突破（成为伟大的师父）' },
+    Ac2: { name: '直觉判断', group: 'Ac', L: '纠结到瘫软大哭', M: '参考同伴的集体共识', H: '本能决策（呀哈！做了再说）' },
+    Ac3: { name: '行动韧性', group: 'Ac', L: '在困难面前迅速放弃', M: '缓慢但从不停止的攀爬', H: '高效致命的执行力（手起刀落完成任务）' },
+    So1: { name: '社交磁场', group: 'So', L: '被动参与社交（躲在朋友的影子下）', M: '弹性社交（点到为止，不逾矩）', H: '人群中的焦点（表演欲爆表的飞鼠式社交）' },
+    So2: { name: '人际共鸣', group: 'So', L: '孤独的高墙', M: '通过共享食物和努力建立的契绊', H: '渴望灵魂层面的共生（甚至愿意交换身体）' },
+    So3: { name: '表达维度', group: 'So', L: '无保留的情绪宣泄（大哭大笑）', M: '得体的社交礼仪（师傅面前的恭敬）', H: '精心修饰的社交辞令（为了显得可爱而表演）' }
+  },
+  
+questions: [
+    { q: '当你发现一个“无限涌出白米饭”的喷泉，你的第一反应是？', opts: [
+      { text: '太棒了！立刻叫上好朋友一起来吃', delta: { So1: 2, E2: 2, HACHIWARE: 2, CHIIKAWA: 1, KANI: 1, POCHETTE_YOROI: 1 } },
+      { text: '拿出碗筷默默干饭，这就是人生的全部', delta: { S3: -2, Ac3: -1, KURIMANJU: 2, USAGI: 1, BEETLE: 1, ANOKO: 1 } },
+      { text: '怀疑这个喷泉的来源，会不会有什么陷阱？', delta: { A1: -2, S2: 2, RAKKO: 2, LABOR_YOROI: 2, RAMEN_YOROI: 1, NAGANO: 1 } }
+    ]},
+
+    { q: '准备了很久的考试竟然没过，你会？', opts: [
+      { text: '在路边大哭一场，但明天还会继续练习', delta: { S1: -2, Ac3: 2, CHIIKAWA: 2, SHISA: 2, DAQIANG: 1, ANOKO: 1 } },
+      { text: '有点失落，但如果朋友过了，还是会真心送上祝福', delta: { E2: 3, So2: 2, HACHIWARE: 2, KANI: 2, POCHETTE_YOROI: 1, CHOGOI_SU: 1 } },
+      { text: '考试什么的太烦了，不如去打游戏发泄一下', delta: { A2: -3, Ac2: 2, USAGI: 2, MOMONGA: 2, KURIMANJU: 1, METEOR: 1 } }
+    ]},
+
+    { q: '走在路上，一个长得特别可爱的小生物一直找你要抱抱，你会？', opts: [
+      { text: '太萌了！立刻抱住它亲亲蹭蹭', delta: { E2: 2, A1: 2, CHIIKAWA: 2, BEETLE: 2, HACHIWARE: 1, CHOGOI_SU: 1 } },
+      { text: '警惕地观察它，它可能下一秒就变异', delta: { A1: -3, S2: 2, RAKKO: 2, LABOR_YOROI: 2, NAGANO: 2, RAMEN_YOROI: 1 } },
+      { text: '假装没看见，这种麻烦事别找我', delta: { So1: -2, E3: 2, KURIMANJU: 2, USAGI: 1, DAQIANG: 1, METEOR: 1 } }
+    ]},
+    
+    { q: '你最向往的工作是？', opts: [
+      { text: '高门槛、高压力、甚至高生理/心理风险，但能够带来阶级跃迁或巨额财富的职业', delta: { S3: 3, Ac1: 2, RAKKO: 2, SHISA: 2, ANOKO: 1, LABOR_YOROI: 1 } },
+      { text: '低压，慢节奏，工作与生活平衡的职业', delta: { S3: -2, E1: 2, CHIIKAWA: 2, HACHIWARE: 1, KANI: 1, POCHETTE_YOROI: 1 } },
+      { text: '通过长时间的磨练来换取一技之长的技术/艺术驱动型职业', delta: { A2: 2, S2: 1, SHISA: 2, RAMEN_YOROI: 3, POCHETTE_YOROI: 2, NAGANO: 1 } }
+    ]},
+
+    { q: '当你看到飞鼠在抢别人的东西，你会？', opts: [
+      { text: '制止它，并把东西还给人家', delta: { A2: 2, E2: 2, RAKKO: 2, LABOR_YOROI: 2, SHISA: 1, KANI: 1 } },
+      { text: '躲在一边瑟瑟发抖，不敢说话', delta: { S1: -3, So1: -2, CHIIKAWA: 2, DAQIANG: 2, NAGANO: 1, METEOR: 1 } },
+      { text: '加入它！抢东西这种事听起来很有趣', delta: { A2: -3, So3: 3, MOMONGA: 3, BEETLE: 2, ANOKO: 1, CHOGOI_SU: 1 } }
+    ]},
+
+    { q: '夜深人静时，你盯着天上的星星，你的愿望通常是？', opts: [
+      { text: '希望能变得更强大', delta: { S3: 2, Ac1: 2, RAKKO: 2, ANOKO: 2, SHISA: 1, DAQIANG: 1 } },
+      { text: '希望能拥有一个限量版礼物', delta: { E2: 2, A1: 2, HACHIWARE: 2, CHIIKAWA: 1, POCHETTE_YOROI: 1, KANI: 1 } },
+      { text: '希望能变得更自由', delta: { S2: 3, E3: 2, USAGI: 2, KURIMANJU: 2, NAGANO: 2, METEOR: 1 } }
+    ]},
+
+    { q: '面对未知的危险森林，你的探索风格是？', opts: [
+      { text: '带上最好的武器和干粮，详细制定计划', delta: { A2: 2, Ac2: -2, RAKKO: 2, LABOR_YOROI: 2, RAMEN_YOROI: 1, SHISA: 1 } },
+      { text: '不管太多，先进去再说！', delta: { Ac2: 3, S1: 2, USAGI: 2, MOMONGA: 1, BEETLE: 1, METEOR: 1 } },
+      { text: '和朋友手拉手，一边发抖一边走', delta: { So2: 2, E2: 2, CHIIKAWA: 2, HACHIWARE: 2, KANI: 1, DAQIANG: 1 } }
+    ]},
+
+    { q: '当你发现这个世界的真相其实很残酷，你会？', opts: [
+      { text: '努力在残酷中寻找细小的幸福，比如一碗热拉面', delta: { A1: 2, E1: 2, HACHIWARE: 2, RAMEN_YOROI: 1, POCHETTE_YOROI: 1, CHOGOI_SU: 1 } },
+      { text: '如果不能反抗，那就加入强者的阵营', delta: { S3: 2, A2: -2, ANOKO: 3, DAQIANG: 2, MOMONGA: 1, BEETLE: 1 } },
+      { text: '作为观察者，把这一切记录下来', delta: { S2: 3, A3: 2, NAGANO: 3, LABOR_YOROI: 1, KURIMANJU: 1, KANI: 1 } }
+    ]},
+
+    { q: '路边出现了一个可以瞬间消除疲劳的按摩机，你？', opts: [
+      { text: '立刻去试！舒服第一', delta: { Ac2: 2, S3: -2, CHOGOI_SU: 3, KURIMANJU: 2, BEETLE: 1, MOMONGA: 1 } },
+      { text: '看起来很可疑，先看看说明书或者观察别人', delta: { S2: 2, A1: -1, LABOR_YOROI: 2, RAKKO: 1, NAGANO: 1, RAMEN_YOROI: 1 } },
+      { text: '把机会让给看起来更累的朋友', delta: { E2: 3, So2: 2, HACHIWARE: 2, KANI: 2, CHIIKAWA: 1, POCHETTE_YOROI: 1 } }
+    ]},
+
+    { q: '你的穿衣风格更接近？', opts: [
+      { text: '喜欢元气可爱的风格', delta: { So1: 2, A1: 2, POCHETTE_YOROI: 3, HACHIWARE: 2, CHIIKAWA: 1, CHOGOI_SU: 1 } },
+      { text: '实用、耐脏、方便战斗的制服', delta: { A2: 2, S3: 2, RAKKO: 2, LABOR_YOROI: 2, SHISA: 1, RAMEN_YOROI: 1 } },
+      { text: '我就是我，不穿也很有个性', delta: { E3: 2, A2: -2, USAGI: 2, MOMONGA: 1, ANOKO: 1, METEOR: 1 } }
+    ]},
+
+    { q: '好朋友邀请你一起去“郎”拉面馆，但你还没准备好复杂的点餐暗号，你会？', opts: [
+      { text: '疯狂背诵，直到烂熟于心才敢去', delta: { A2: 3, Ac1: 2, SHISA: 3, LABOR_YOROI: 1, RAMEN_YOROI: 2, RAKKO: 1 } },
+      { text: '硬着头皮去，说错了就尴尬地笑笑', delta: { So1: 2, E1: 2, HACHIWARE: 2, CHIIKAWA: 1, KANI: 1, CHOGOI_SU: 1 } },
+      { text: '让朋友帮我点，我只负责吃', delta: { S3: -2, E3: -2, KURIMANJU: 2, USAGI: 1, BEETLE: 1, MOMONGA: 1 } }
+    ]},
+    
+    { q: '你更喜欢哪种社交方式？', opts: [
+      { text: '有一些知心朋友，大家时常聚会', delta: { So1: 3, E2: 2, HACHIWARE: 2, CHIIKAWA: 1, KANI: 1, POCHETTE_YOROI: 1 } },
+      { text: '不喜欢社交，更喜欢独自小酌，享受寂静的夜晚', delta: { E3: 3, So1: -3, KURIMANJU: 3, NAGANO: 2, DAQIANG: 1, METEOR: 1 } },
+      { text: '和强者同台竞技，不断提升自我', delta: { S3: 3, Ac1: 2, RAKKO: 3, SHISA: 2, RAMEN_YOROI: 1, LABOR_YOROI: 1 } }
+    ]},
+    
+    { q: '当你看到一张奇怪的“交换身体”药水配方，你会？', opts: [
+      { text: '这太邪恶了，必须销毁', delta: { A2: 2, E2: 1, LABOR_YOROI: 3, RAMEN_YOROI: 1, RAKKO: 1, KANI: 1 } },
+      { text: '偷偷记下来，万一哪天想换个人生呢？', delta: { S2: -2, Ac2: 2, MOMONGA: 3, ANOKO: 2, BEETLE: 2, METEOR: 1 } },
+      { text: '研究它的逻辑，分析其生物学原理', delta: { S2: 3, A3: 2, NAGANO: 3, DAQIANG: 1, CHOGOI_SU: 1, CHIIKAWA: 1 } }
+    ]},
+
+    { q: '如果你是一只小怪兽，你会攻击 Chiikawa 族吗？', opts: [
+      { text: '绝对不会，我内心还是温柔的小可爱', delta: { E2: 2, A1: 2, CHIIKAWA: 2, DAQIANG: 2, KANI: 1, HACHIWARE: 1 } },
+      { text: '可能会，为了生存（或者是肚子饿了）', delta: { S3: -2, E2: -3, ANOKO: 3, BEETLE: 3, METEOR: 1, LABOR_YOROI: 1 } },
+      { text: '取决于他们有没有惹到我', delta: { E3: 2, A2: -1, USAGI: 2, KURIMANJU: 2, NAGANO: 1, RAMEN_YOROI: 1 } }
+    ]},
+
+    { q: '当你感到压力巨大时，你最有效的解压方式是？', opts: [
+      { text: '猛吃一顿好吃的（比如牛排或红豆包）', delta: { S3: -1, Ac2: 1, KURIMANJU: 3, RAKKO: 2, RAMEN_YOROI: 1, CHOGOI_SU: 1 } },
+      { text: '对着天空大喊', delta: { So3: -2, S2: -1, USAGI: 3, MOMONGA: 2, BEETLE: 1, METEOR: 1 } },
+      { text: '找好朋友倾诉，抱着他哭一会', delta: { E2: 3, So2: 2, CHIIKAWA: 3, HACHIWARE: 2, KANI: 1, POCHETTE_YOROI: 1 } }
+    ]},
+
+    { q: '你如何看待各种“证书”？', opts: [
+      { text: '那是阶级晋升和高薪的唯一希望', delta: { S3: 3, Ac1: 3, SHISA: 3, LABOR_YOROI: 1, RAKKO: 1, ANOKO: 1 } },
+      { text: '是和朋友共同奋斗的见证', delta: { E2: 2, So2: 2, HACHIWARE: 3, CHIIKAWA: 2, KANI: 1, POCHETTE_YOROI: 1 } },
+      { text: '一张纸而已，实力才是硬道理', delta: { A2: -3, S2: 2, USAGI: 3, KURIMANJU: 2, NAGANO: 1, METEOR: 1 } }
+    ]},
+
+    { q: '如果流星真的出现了并要求住在你家，你会？', opts: [
+      { text: '感到害怕，想办法把它送走', delta: { E1: -2, S1: -1, CHIIKAWA: 3, DAQIANG: 2, LABOR_YOROI: 1, RAMEN_YOROI: 1 } },
+      { text: '尝试和它做朋友，也许它能实现愿望', delta: { A1: 2, So1: 2, HACHIWARE: 3, METEOR: 3, CHOGOI_SU: 1, MOMONGA: 1 } },
+      { text: '把它供起来，当作装饰品', delta: { S2: 3, A3: 1, NAGANO: 3, USAGI: 1, KURIMANJU: 1, BEETLE: 1 } }
+    ]},
+
+    { q: '你在聚会上看到大家都在跳舞，你会？', opts: [
+      { text: '加入大家，一起跳舞！', delta: { So1: 3, E2: 2, HACHIWARE: 3, SHISA: 2, POCHETTE_YOROI: 1, CHIIKAWA: 1 } },
+      { text: '在角落里默默吃零食看大家跳', delta: { E3: 2, So1: -3, KURIMANJU: 3, KANI: 2, NAGANO: 1, LABOR_YOROI: 1 } },
+      { text: '自己伴着音乐摇摆', delta: { A2: -2, S1: 2, USAGI: 3, MOMONGA: 2, BEETLE: 1, ANOKO: 1 } }
+    ]},
+
+    { q: '当你发现好朋友变异成怪物了，你会？', opts: [
+      { text: '即便被伤害，也想尝试唤醒他的记忆', delta: { E2: 3, S1: -1, CHIIKAWA: 3, DAQIANG: 3, KANI: 1, HACHIWARE: 1 } },
+      { text: '痛苦地拿起武器，为了保护更多人而战斗', delta: { A2: 3, S3: 2, RAKKO: 3, LABOR_YOROI: 2, RAMEN_YOROI: 1, SHISA: 1 } },
+      { text: '呆在原地，大脑一片空白', delta: { S2: 2, A3: 1, NAGANO: 2, KURIMANJU: 1, USAGI: 1, METEOR: 1 } }
+    ]},
+
+    { q: '你觉得在这个世界生存，最重要的是？', opts: [
+      { text: '同伴的陪伴与友谊', delta: { E2: 2, So2: 2, HACHIWARE: 2, CHIIKAWA: 2, KANI: 1, POCHETTE_YOROI: 1 } },
+      { text: '绝对的武力值', delta: { Ac3: 2, S3: 2, RAKKO: 2, LABOR_YOROI: 2, ANOKO: 1, SHISA: 1 } },
+      { text: '好运气和逃跑的速度', delta: { S2: 2, Ac2: 2, USAGI: 2, NAGANO: 2, KURIMANJU: 1, METEOR: 1 } }
+    ]},
+
+    { q: '如果你发现自己正身处一个循环往复、无法逃脱的梦境，你会？', opts: [
+      { text: '虽然害怕，但会努力寻找线索打破循环', delta: { S2: 2, Ac3: 2, CHIIKAWA: 2, SHISA: 2, RAKKO: 1, LABOR_YOROI: 1 } },
+      { text: '既然梦里有吃不完的美味，那就一直待着吧', delta: { S3: -3, A1: 2, KURIMANJU: 2, CHOGOI_SU: 2, HACHIWARE: 1, BEETLE: 1 } },
+      { text: '疯狂捣乱，看能不能把梦境系统搞崩溃', delta: { A2: -3, Ac2: 2, USAGI: 3, MOMONGA: 2, ANOKO: 1, METEOR: 1 } }
+    ]},
+
+    { q: '看到路边有掉落的金币，你会？', opts: [
+      { text: '寻找失主，或者上交给警察', delta: { A2: 3, S2: 1, SHISA: 3, LABOR_YOROI: 2, RAMEN_YOROI: 1, RAKKO: 1 } },
+      { text: '太好了，捡起来去买心仪已久的礼物', delta: { S1: 2, Ac2: 2, MOMONGA: 3, ANOKO: 1, HACHIWARE: 1, CHIIKAWA: 1 } },
+      { text: '没看见，不想弯腰', delta: { E3: 2, A1: -1, KURIMANJU: 2, NAGANO: 2, DAQIANG: 1, METEOR: 1 } }
+    ]},
+
+    { q: '面对比你大几十倍的怪物，你的第一反应是？', opts: [
+      { text: '直接吓哭', delta: { S1: -3, E1: -2, CHIIKAWA: 3, DAQIANG: 2, KANI: 1, POCHETTE_YOROI: 1 } },
+      { text: '攻击！', delta: { Ac3: 3, S1: 3, USAGI: 3, RAKKO: 2, ANOKO: 1, BEETLE: 1 } },
+      { text: '分析怪物的弱点，寻找最佳撤退路线', delta: { Ac2: -2, S2: 2, LABOR_YOROI: 2, NAGANO: 2, RAMEN_YOROI: 1, CHOGOI_SU: 1 } }
+    ]},
+
+    { q: '你对“可爱”的定义是？', opts: [
+      { text: '毛茸茸、软绵绵，让人想保护', delta: { E2: 2, A1: 2, CHIIKAWA: 2, POCHETTE_YOROI: 3, HACHIWARE: 1, KANI: 1 } },
+      { text: '有个性、有生命力', delta: { S1: 2, Ac3: 1, USAGI: 2, MOMONGA: 2, BEETLE: 2, ANOKO: 1 } },
+      { text: '可爱只是一种面具，真相往往不可言说', delta: { S2: 3, A3: 2, NAGANO: 3, LABOR_YOROI: 1, DAQIANG: 1, METEOR: 1 } }
+    ]},
+
+    { q: '如果让你给这个世界制定一条新法律，你会选择？', opts: [
+      { text: '每天必须有两小时的“无限零食时间”', delta: { S3: -2, E1: 2, HACHIWARE: 2, KURIMANJU: 2, CHOGOI_SU: 2, CHIIKAWA: 1 } },
+      { text: '制度和上升渠道的绝对公平', delta: { S3: 3, A2: 3, RAKKO: 2, LABOR_YOROI: 2, SHISA: 2, RAMEN_YOROI: 1 } },
+      { text: '废除所有考试，大家自由生长', delta: { A2: -3, E3: 2, USAGI: 3, ANOKO: 2, MOMONGA: 1, METEOR: 1 } }
+    ]},
+
+    { q: '当你疲惫不堪地回到家，发现桌上放着朋友做的饭，你会？', opts: [
+      { text: '边吃边流下感动的泪水', delta: { E2: 3, A1: 2, CHIIKAWA: 3, HACHIWARE: 2, KANI: 1, POCHETTE_YOROI: 1 } },
+      { text: '这就是我活着的动力！', delta: { S3: 2, Ac1: 1, SHISA: 2, RAMEN_YOROI: 2, RAKKO: 1, LABOR_YOROI: 1 } },
+      { text: '如果是喜欢的我就吃', delta: { E3: 2, S2: 1, KURIMANJU: 2, USAGI: 1, MOMONGA: 1, BEETLE: 1 } }
+    ]},
+
+    { q: '你觉得自己的灵魂颜色是？', opts: [
+      { text: '纯净透明的白色', delta: { E2: 2, S1: -2, CHIIKAWA: 2, HACHIWARE: 2, KANI: 1, DAQIANG: 1 } },
+      { text: '耀眼夺目的混乱色', delta: { S1: 3, Ac3: 2, USAGI: 3, MOMONGA: 2, ANOKO: 2, BEETLE: 1 } },
+      { text: '深邃内敛的黑色', delta: { S2: 3, A3: 2, NAGANO: 3, LABOR_YOROI: 2, RAKKO: 1, METEOR: 1 } }
+    ]},
+
+    { q: '在 chiikawa 的世界中，你更想成为……', opts: [
+      { text: '通过自己努力一步步爬上巅峰的强者', delta: { S3: 2, Ac1: 2, RAKKO: 2, SHISA: 2, LABOR_YOROI: 1, S1: 2 } },
+      { text: '活在当下，享受这个奇妙世界的小可爱', delta: { E2: 2, A1: 2, CHIIKAWA: 2, HACHIWARE: 2, KANI: 1, POCHETTE_YOROI: 1 } },
+      { text: '自由局外人，不是很在乎在这个世界发生了什么', delta: { E3: 2, S2: 2, KURIMANJU: 2, USAGI: 2, NAGANO: 2, METEOR: 1 } }
+    ]}
+  ]
+};
+</script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800;900&display=swap');
+
+  :root {
+    --bg: #f5f5f0;
+    --bg2: #eaeae4;
+    --ink: #1c1c1a;
+    --ink2: #3c3c38;
+    --ink3: #888880;
+    --border: rgba(28,28,26,0.1);
+    --border-strong: rgba(28,28,26,0.18);
+    --accent: #1caefc; /* 改为吉伊卡哇标志性的红色/粉色系 */
+    --card: #ffffff;
+    --shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Sora', -apple-system, 'PingFang SC', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .screen { display: none; min-height: 100vh; }
+  .screen.active { display: flex; flex-direction: column; }
+
+  /* ── START ── */
+  #start-screen {
+    align-items: center;
+    justify-content: center;
+    padding: 56px 28px 48px;
+    text-align: center;
+  }
+
+  .s-badge {
+    display: inline-block;
+    background: var(--ink);
+    color: var(--bg);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 5px 14px;
+    border-radius: 4px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+
+  .s-title {
+    font-size: 88px;
+    font-weight: 900;
+    letter-spacing: -5px;
+    line-height: 0.85;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+
+  .s-subtitle {
+    font-size: 12px;
+    color: var(--ink3);
+    letter-spacing: 3px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .s-line { width: 32px; height: 3px; background: var(--accent); margin: 0 auto 24px; border-radius: 2px; }
+
+  .s-copy {
+    font-size: 15px;
+    color: var(--ink2);
+    line-height: 1.9;
+    margin-bottom: 8px;
+    max-width: 280px;
+    font-weight: 600;
+  }
+
+  .s-copy2 {
+    font-size: 13px;
+    color: var(--ink3);
+    line-height: 1.7;
+    margin-bottom: 36px;
+    max-width: 280px;
+  }
+
+  .s-btn {
+    width: 100%;
+    max-width: 320px;
+    padding: 18px;
+    background: var(--ink);
+    color: var(--bg);
+    font-size: 15px;
+    font-weight: 700;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: transform 0.12s, box-shadow 0.12s;
+    font-family: inherit;
+    box-shadow: 4px 4px 0 rgba(28,28,26,0.15);
+  }
+
+  .s-btn:active { transform: translate(2px,2px); box-shadow: 2px 2px 0 rgba(28,28,26,0.15); }
+
+  .s-note { margin-top: 14px; font-size: 11px; color: var(--ink3); letter-spacing: 0.5px; }
+
+  /* ── QUIZ ── */
+  #quiz-screen { background: var(--bg); }
+
+  .q-topbar { padding: 20px 24px 0; position: sticky; top: 0; background: var(--bg); z-index: 10; }
+
+  .q-progress-row { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+
+  .q-progress-track { flex: 1; height: 3px; background: var(--border); border-radius: 3px; overflow: hidden; }
+
+  .q-progress-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.4s ease; }
+
+  .q-counter { font-size: 11px; font-weight: 700; color: var(--accent); letter-spacing: 1px; white-space: nowrap; }
+
+  .q-body { padding: 20px 24px 48px; }
+
+  .q-num { font-size: 11px; color: var(--accent); letter-spacing: 2px; font-weight: 700; margin-bottom: 10px; }
+
+  .q-text {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.45;
+    margin-bottom: 8px;
+    letter-spacing: -0.2px;
+  }
+
+  .q-hint {
+    font-size: 12px;
+    color: var(--ink3);
+    margin-bottom: 22px;
+    line-height: 1.5;
+  }
+
+  .q-opts { display: flex; flex-direction: column; gap: 8px; }
+
+  .q-opt {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 15px 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    transition: border-color 0.15s, transform 0.12s, background 0.12s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .q-opt:hover { border-color: var(--ink); background: #fafaf5; transform: translateX(3px); }
+  .q-opt:active { transform: translateX(1px); }
+
+  .q-opt-letter {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800; color: var(--ink2);
+    flex-shrink: 0; margin-top: 1px;
+  }
+
+  .q-opt-text { font-size: 14px; color: var(--ink2); line-height: 1.5; }
+
+  /* ── RESULT ── */
+  #result-screen { overflow-y: auto; background: var(--bg); }
+
+  .r-hero { padding: 48px 24px 28px; text-align: center; }
+
+  .r-eyebrow { font-size: 11px; color: var(--ink3); letter-spacing: 3px; font-weight: 600; text-transform: uppercase; margin-bottom: 16px; }
+
+.r-avatar-card {
+  width: 300px;
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* 垂直居中 */
+  align-items: center;
+  padding: 12px 10px;
+}
+  .r-avatar-emoji {
+    width: 260px;
+    height: 260px;
+    font-size: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 6px;
+    overflow: hidden;
+  }
+  .r-avatar-emoji img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    border-radius: 10px;
+    transform: scale(1);
+    transform-origin: center;
+  }
+  .r-avatar-label { width: 100%; font-size: 20px; font-weight: 400; letter-spacing: 0.5px; color: #8a8a8a; text-transform: uppercase; text-align: left; line-height: 1.5; }
+
+  .r-type-code {
+    font-size: 11px; font-weight: 800; letter-spacing: 4px;
+    padding: 5px 16px; border-radius: 6px;
+    display: inline-block; margin-bottom: 10px;
+    color: #fff; text-transform: uppercase;
+  }
+
+  .r-type-name {
+    font-size: 36px; font-weight: 900; color: var(--ink);
+    letter-spacing: -2px; line-height: 1; margin-bottom: 16px;
+  }
+
+  .r-match-row {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 20px; padding: 6px 16px; margin-bottom: 6px;
+  }
+
+  .r-match-pct {
+    font-size: 16px;
+    font-weight: 800;
+    color: #1c1c1a !important;
+    display: inline-block;
+    min-width: 50px;
+    line-height: 1;
+    white-space: nowrap;
+    visibility: visible !important;
+    font-variant-numeric: tabular-nums;
+  }
+  .r-match-pct:empty::before { content: attr(data-pct); }
+  .r-match-label { font-size: 11px; color: var(--ink3); font-weight: 600; }
+
+  .r-hit { font-size: 12px; color: var(--ink3); margin-top: 4px; }
+  .r-slogan { font-size: 13px; color: var(--accent); font-weight: 700; margin-top: 10px; }
+
+  /* body */
+  .r-body { padding: 12px 20px 0; }
+
+  .r-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 20px; margin-bottom: 10px;
+    box-shadow: var(--shadow);
+  }
+
+  .r-card-title {
+    font-size: 10px; font-weight: 800; color: var(--ink3);
+    letter-spacing: 3px; text-transform: uppercase; margin-bottom: 14px;
+  }
+
+  .r-desc { font-size: 14px; color: var(--ink2); line-height: 1.9; }
+
+  /* 维度列表 */
+  .dim-list { display: flex; flex-direction: column; gap: 12px; }
+
+  .dim-row { display: flex; align-items: center; gap: 10px; }
+
+  .dim-labels { width: 82px; flex-shrink: 0; }
+  .dim-code { font-size: 9px; font-weight: 800; color: var(--accent); letter-spacing: 1px; }
+  .dim-name { font-size: 11px; color: var(--ink2); font-weight: 600; white-space: nowrap; }
+
+  .dim-right { flex: 1; min-width: 0; }
+  .dim-track { height: 5px; background: var(--bg2); border-radius: 4px; overflow: hidden; margin-bottom: 4px; }
+  .dim-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+  .dim-desc { font-size: 11px; color: var(--ink3); line-height: 1.4; }
+
+  .dim-badge {
+    width: 26px; height: 18px; border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 800; flex-shrink: 0; letter-spacing: 0.5px;
+  }
+  .dim-badge.L { background: #fef3c7; color: #92400e; }
+  .dim-badge.M { background: #dbeafe; color: #1e40af; }
+  .dim-badge.H { background: #dcfce7; color: #166534; }
+
+  /* btns */
+  .r-btns { display: flex; gap: 10px; padding: 16px 20px 20px; }
+
+  .btn-save {
+    flex: 1; padding: 15px;
+    background: var(--ink); color: var(--bg);
+    font-size: 14px; font-weight: 700; border: none;
+    border-radius: 12px; cursor: pointer; font-family: inherit;
+    box-shadow: 3px 3px 0 rgba(28,28,26,0.15);
+    transition: transform 0.12s, box-shadow 0.12s;
+  }
+  .btn-save:active { transform: translate(1px,1px); box-shadow: 1px 1px 0 rgba(28,28,26,0.15); }
+
+  .btn-retry {
+    padding: 15px 18px; background: var(--card);
+    border: 1.5px solid var(--border-strong); color: var(--ink2);
+    font-size: 14px; border-radius: 12px; cursor: pointer;
+    white-space: nowrap; font-family: inherit; font-weight: 600;
+    transition: background 0.12s;
+  }
+  .btn-retry:hover { background: var(--bg2); }
+
+  .r-tip {
+    margin: 0 20px 16px; padding: 14px 16px;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; font-size: 12px; color: var(--ink3); line-height: 1.7;
+  }
+
+  /* QR footer */
+  .qr-footer {
+    display: none; align-items: center; gap: 12px;
+    margin: 0 20px 16px; padding: 14px 16px;
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+  }
+  .qr-box { width: 64px; height: 64px; border-radius: 8px; overflow: hidden; background: #fff; flex-shrink: 0; border: 1px solid var(--border); }
+  .qr-text { font-size: 12px; color: var(--ink3); line-height: 1.5; }
+  .qr-text strong { display: block; color: var(--ink); font-size: 13px; margin-bottom: 2px; font-weight: 700; }
+
+  /* 保存遮罩 */
+  .save-ov {
+    display: none; position: fixed; inset: 0;
+    background: rgba(10,10,8,0.88); z-index: 9999;
+    flex-direction: column; align-items: center; justify-content: center; padding: 20px;
+  }
+  .save-ov.show { display: flex; }
+  .save-ov img { max-width: 92%; max-height: 64vh; border-radius: 12px; box-shadow: 0 16px 48px rgba(0,0,0,0.4); }
+  .save-ov p { color: rgba(245,245,240,0.7); margin: 16px 0 12px; font-size: 14px; text-align: center; line-height: 1.6; }
+  .save-ov-btns { display: flex; gap: 10px; }
+  .save-ov.loading img, .save-ov.loading p, .save-ov.loading .save-ov-btns { display: none; }
+  .save-ov.loading::after { content: '生成中…'; color: rgba(245,245,240,0.5); font-size: 15px; }
+</style>
+
+<div id="start-screen" class="screen active">
+  <span class="s-badge">CBTI · 灵魂镜像测试</span>
+  <div class="s-title">CBTI</div>
+  <div class="s-subtitle">映射你最真实的身份倒影</div>
+  <div class="s-line"></div>
+  <p class="s-copy">在这个充满劳动、讨伐与奇迹的世界里，你究竟是谁？</p>
+  <p class="s-copy2"> 直面你深层的生命力</p>
+  <button class="s-btn" id="start-btn">开始测试</button>
+  <p class="s-note">共 28 题 · 约 3 分钟 · 结果仅供娱乐</p>
+</div>
+
+<div id="quiz-screen" class="screen">
+  <div class="q-topbar">
+    <div class="q-progress-row">
+      <div class="q-progress-track">
+        <div class="q-progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+      <div class="q-counter" id="q-counter">1 / 31</div>
+    </div>
+  </div>
+  <div class="q-body">
+    <div class="q-num">Q<span id="q-num">01</span></div>
+    <div class="q-text" id="q-text"></div>
+    <div class="q-hint" id="q-hint"></div>
+    <div class="q-opts" id="q-opts"></div>
+  </div>
+</div>
+
+<div id="result-screen" class="screen">
+  <div id="xbti-share-card">
+    <div class="r-hero">
+      <div class="r-eyebrow">映射出的Chiikawa身份是</div>
+      <div class="r-avatar-card" id="r-avatar-card">
+        <span class="r-avatar-emoji" id="r-avatar-emoji"></span>
+        <span class="r-avatar-label" id="r-avatar-label"></span>
+      </div>
+      <div class="r-type-code" id="r-type-code"></div>
+      <div class="r-type-name" id="r-type-name"></div>
+      <div class="r-match-row">
+        <span class="r-match-pct" id="r-match-pct"></span>
+        <span class="r-match-label">匹配度</span>
+      </div>
+      <div class="r-hit" id="r-hit"></div>
+      <div class="r-slogan" id="r-slogan"></div>
+    </div>
+    <div class="r-body">
+      <div class="r-card">
+        <div class="r-card-title">◈ 灵魂解析</div>
+        <div class="r-desc" id="r-desc"></div>
+      </div>
+      <div class="r-card">
+        <div class="r-card-title">◈ 生命周期维度评分</div>
+        <div class="dim-list" id="dim-list"></div>
+      </div>
+    </div>
+    <div class="r-tip">本测试基于原作世界观设定，别拿它当许愿、算命或人生判决书。
+    </div>
+    <div class="qr-footer" id="qr-footer">
+      <div class="qr-box" id="qr"></div>
+      <div class="qr-text">
+        <strong>扫码测测你的 CBTI 灵魂镜像</strong>
+
+      </div>
+    </div>
+  </div>
+  <div class="r-btns">
+    <button class="btn-save" id="btn-save">生成分享图</button>
+    <button class="btn-retry" id="btn-retry">再测一次</button>
+  </div>
+  <div class="save-ov" id="save-ov">
+    <img id="save-img" alt="结果图">
+    <p>长按图片保存到相册<br>或点击按钮下载</p>
+    <div class="save-ov-btns">
+      <button class="btn-save" id="save-dl" style="padding:12px 24px;font-size:14px">保存图片</button>
+      <button class="btn-retry" id="save-close" style="padding:12px 18px">关闭</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  var cfg = CONFIG;
+  var qs = cfg.questions;
+  var totalQ = qs.length;
+  var currentQ = 0;
+  var latestRes = null;
+
+  var dimKeys = Object.keys(cfg.dims);
+  var typeKeys = Object.keys(cfg.types);
+
+  // 维度分 初始3分（中间值），范围0-6
+  var dimScores = {};
+  for (var i = 0; i < dimKeys.length; i++) { dimScores[dimKeys[i]] = 3; }
+
+  // 人格直接加成
+  var typeBonus = {};
+  for (var i = 0; i < typeKeys.length; i++) { typeBonus[typeKeys[i]] = 0; }
+
+  // 维度组颜色适配吉伊卡哇风格
+  var groupColors = { S: '#16a34a', E: '#db2777', A: '#7c3aed', Ac: '#dc2626', So: '#0891b2' };
+
+  function clamp(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
+
+  function showScreen(id) {
+    var all = document.querySelectorAll('.screen');
+    for (var i = 0; i < all.length; i++) { all[i].classList.remove('active'); }
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function renderQ() {
+    var pct = Math.round((currentQ / totalQ) * 100);
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('q-counter').textContent = (currentQ + 1) + ' / ' + totalQ;
+    document.getElementById('q-num').textContent = (currentQ + 1 < 10 ? '0' : '') + (currentQ + 1);
+    var q = qs[currentQ];
+    document.getElementById('q-text').textContent = q.q;
+    
+    var hintEl = document.getElementById('q-hint');
+    hintEl.textContent = q.hint || '';
+    hintEl.style.display = q.hint ? 'block' : 'none';
+
+    var optsEl = document.getElementById('q-opts');
+    optsEl.innerHTML = '';
+    var letters = ['A', 'B', 'C'];
+    for (var i = 0; i < q.opts.length; i++) {
+      var opt = q.opts[i];
+      var el = document.createElement('div');
+      el.className = 'q-opt';
+      el.innerHTML =
+        '<div class="q-opt-letter">' + letters[i] + '</div>' +
+        '<div class="q-opt-text">' + opt.text + '</div>';
+      (function(delta) {
+        el.addEventListener('click', function() {
+          for (var dk in delta) {
+            if (dimScores.hasOwnProperty(dk)) {
+              dimScores[dk] = clamp(dimScores[dk] + delta[dk], 0, 6);
+            } else if (typeBonus.hasOwnProperty(dk)) {
+              typeBonus[dk] += delta[dk];
+            }
+          }
+          currentQ++;
+          if (currentQ >= totalQ) { showResult(); } else { renderQ(); }
+        });
+      })(opt.delta || {});
+      optsEl.appendChild(el);
+    }
+  }
+
+  function calcResult() {
+    var scores = {};
+    for (var i = 0; i < typeKeys.length; i++) {
+      var tk = typeKeys[i];
+      var t = cfg.types[tk];
+      var score = (typeBonus[tk] || 0) * 3;
+      for (var dk in t.weights) {
+        if (!dimScores.hasOwnProperty(dk)) continue;
+        var wt = t.weights[dk];
+        var ds = dimScores[dk];
+        if (wt > 0) { score += (ds / 6) * wt * 4; }
+        else { score += ((6 - ds) / 6) * Math.abs(wt) * 4; }
+      }
+      scores[tk] = score;
+    }
+    var winner = typeKeys[0];
+    var maxS = scores[typeKeys[0]];
+    var secondS = -Infinity;
+    for (var i = 1; i < typeKeys.length; i++) {
+      var s = scores[typeKeys[i]];
+      if (s > maxS) {
+        secondS = maxS;
+        maxS = s;
+        winner = typeKeys[i];
+      } else if (s > secondS) {
+        secondS = s;
+      }
+    }
+    if (secondS === -Infinity) secondS = maxS;
+
+    var total = 0;
+    for (var i = 0; i < typeKeys.length; i++) { total += scores[typeKeys[i]]; }
+
+    // Use both absolute dominance and runner-up gap so percentage has visible spread.
+    var share = total > 0 ? (maxS / total) : 0;
+    var gap = maxS - secondS;
+    var denom = Math.max(Math.abs(maxS), 1);
+    var gapRatio = clamp(gap / denom, 0, 1);
+    var rawPct = 52 + (share * 170) + (gapRatio * 28);
+    var pct = clamp(Math.round(rawPct), 55, 95);
+
+    var hit = clamp(Math.floor(pct / 7) + 3, 9, 15);
+    return { type: winner, pct: pct, hit: hit };
+  }
+
+  function dimLevel(s) { return s <= 2 ? 'L' : s <= 4 ? 'M' : 'H'; }
+
+  function showResult() {
+    var res = calcResult();
+    latestRes = res;
+    var d = cfg.types[res.type];
+    showScreen('result-screen');
+
+    var card = document.getElementById('r-avatar-card');
+    card.style.background = d.bg;
+    card.style.border = '2px solid ' + d.color + '40';
+    card.style.boxShadow = '6px 6px 0 ' + d.color + '25';
+    var avatarEl = document.getElementById('r-avatar-emoji');
+    var labelEl = document.getElementById('r-avatar-label');
+    avatarEl.setAttribute('data-fallback-emoji', d.emoji || '🙂');
+    if (d.img) {
+      avatarEl.innerHTML = '<img crossorigin="anonymous" referrerpolicy="no-referrer" src="' + d.img + '" alt="' + (d.name || res.type) + '" onerror="this.remove(); this.parentElement.textContent=\'' + (d.emoji || '') + '\';"></img>';
+    } else {
+      avatarEl.textContent = d.emoji || '';
+    }
+    labelEl.textContent = d.quote || '';
+
+    var codeEl = document.getElementById('r-type-code');
+    codeEl.textContent = d.code || res.type;
+    codeEl.style.background = d.color;
+    document.getElementById('r-type-name').textContent = d.name;
+    var pctText = res.pct + '%';
+    var pctEl = document.getElementById('r-match-pct');
+    pctEl.innerText = pctText;
+    pctEl.textContent = pctText;
+    pctEl.setAttribute('data-pct', pctText);
+    document.getElementById('r-hit').textContent = '精准共鸣 ' + res.hit + '/15 维度 · 灵魂极度契合';
+    document.getElementById('r-hit').setAttribute('data-hit', '精准共鸣 ' + res.hit + '/15 维度 · 灵魂极度契合');
+    document.getElementById('r-slogan').textContent = d.slogan;
+    document.getElementById('r-desc').textContent = d.desc;
+
+    var dimList = document.getElementById('dim-list');
+    dimList.innerHTML = '';
+    for (var i = 0; i < dimKeys.length; i++) {
+      var dk = dimKeys[i];
+      var dc = cfg.dims[dk];
+      var lv = dimLevel(dimScores[dk]);
+      var fillPct = Math.round((dimScores[dk] / 6) * 100);
+      var groupKey = dc.group;
+      var barColor = groupColors[groupKey] || '#ef4444';
+      var row = document.createElement('div');
+      row.className = 'dim-row';
+      row.innerHTML =
+        '<div class="dim-labels">' +
+          '<div class="dim-code">' + dk + '</div>' +
+          '<div class="dim-name">' + dc.name + '</div>' +
+        '</div>' +
+        '<div class="dim-right">' +
+          '<div class="dim-track"><div class="dim-fill" style="width:' + fillPct + '%;background:' + barColor + '"></div></div>' +
+          '<div class="dim-desc">' + dc[lv] + '</div>' +
+        '</div>' +
+        '<div class="dim-badge ' + lv + '">' + lv + '</div>';
+      dimList.appendChild(row);
+    }
+
+    document.getElementById('btn-retry').onclick = function() {
+      currentQ = 0;
+      for (var i = 0; i < dimKeys.length; i++) { dimScores[dimKeys[i]] = 3; }
+      for (var i = 0; i < typeKeys.length; i++) { typeBonus[typeKeys[i]] = 0; }
+      showScreen('start-screen');
+    };
+    document.getElementById('btn-save').onclick = function() { saveImage(); };
+    document.getElementById('save-close').onclick = function() { document.getElementById('save-ov').classList.remove('show'); };
+    document.getElementById('save-dl').onclick = function() { downloadImage(); };
+  }
+
+  function syncShareCardData() {
+    var res = latestRes || calcResult();
+    var pctEl = document.getElementById('r-match-pct');
+    if (pctEl && res) {
+      var pctText = res.pct + '%';
+      pctEl.innerText = pctText;
+      pctEl.textContent = pctText;
+      pctEl.setAttribute('data-pct', pctText);
+      pctEl.style.display = 'inline-block';
+    }
+
+    var hitEl = document.getElementById('r-hit');
+    if (hitEl && res) {
+      var hitText = '精准共鸣 ' + res.hit + '/15 维度 · 灵魂极度契合';
+      if (!hitEl.textContent || !hitEl.textContent.trim()) {
+        hitEl.textContent = hitText;
+      }
+      hitEl.setAttribute('data-hit', hitText);
+    }
+  }
+
+  function loadJS(url, flag, cb, onError) {
+    if (window[flag]) { cb && cb(); return; }
+    var s = document.createElement('script');
+    s.src = url;
+    s.onload = function() { cb && cb(); };
+    s.onerror = function() {
+      if (onError) onError();
+      else alert('资源加载失败，请手动截图保存');
+    };
+    document.head.appendChild(s);
+  }
+
+  function loadJSFallback(urls, flag, cb, onError) {
+    if (window[flag]) { cb && cb(); return; }
+    var i = 0;
+    function tryNext() {
+      if (i >= urls.length) {
+        if (onError) onError();
+        else alert('资源加载失败，请手动截图保存');
+        return;
+      }
+      loadJS(urls[i++], flag, cb, tryNext);
+    }
+    tryNext();
+  }
+
+  function genQR(cb) {
+    var el = document.getElementById('qr'); el.innerHTML = '';
+    function doGen() {
+      try {
+        new QRCode(el, { text: window.location.href, width: 64, height: 64,
+          colorDark: '#1c1c1a', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
+      } catch(e) { document.getElementById('qr-footer').style.display = 'none'; }
+      setTimeout(cb, 120);
+    }
+    loadJSFallback([
+      'https://cdn.bootcdn.net/ajax/libs/qrcodejs/1.0.0/qrcode.min.js',
+      'https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js'
+    ], 'QRCode', doGen, function() {
+      document.getElementById('qr-footer').style.display = 'none';
+      cb();
+    });
+  }
+
+  function waitForImages(container, timeoutMs) {
+    return new Promise(function(resolve) {
+      if (!container) { resolve(); return; }
+
+      var imgs = container.querySelectorAll('img');
+      if (!imgs.length) { resolve(); return; }
+
+      var done = 0;
+      var settled = false;
+      var timer = null;
+
+      function finish() {
+        if (settled) return;
+        settled = true;
+        if (timer) clearTimeout(timer);
+        resolve();
+      }
+
+      function markDone() {
+        done++;
+        if (done >= imgs.length) finish();
+      }
+
+      timer = setTimeout(finish, timeoutMs || 2500);
+
+      for (var i = 0; i < imgs.length; i++) {
+        var img = imgs[i];
+        if (img.complete) {
+          markDone();
+          continue;
+        }
+        img.addEventListener('load', markDone, false);
+        img.addEventListener('error', markDone, false);
+      }
+
+      if (done >= imgs.length) finish();
+    });
+  }
+
+  function captureShareCard(onSuccess, onFail) {
+    var shareCard = document.getElementById('xbti-share-card');
+
+    function captureOptions() {
+      var res = latestRes || calcResult();
+      var livePctEl = document.getElementById('r-match-pct');
+      var currentPct = (res && typeof res.pct !== 'undefined')
+        ? (res.pct + '%')
+        : (livePctEl ? ((livePctEl.textContent || livePctEl.innerText || '').trim() || (livePctEl.getAttribute('data-pct') || '').trim()) : '');
+      var hitText = (res && typeof res.hit !== 'undefined') ? ('精准共鸣 ' + res.hit + '/15 维度 · 灵魂极度契合') : '';
+      return {
+        backgroundColor: '#f5f5f0',
+        scale: 2,
+        useCORS: true,
+        allowTaint: false,
+        imageTimeout: 15000,
+        logging: false,
+        onclone: function(cloneDoc) {
+          var rowEl = cloneDoc.querySelector('.r-match-row');
+          if (rowEl) {
+            rowEl.innerHTML = '';
+            rowEl.textContent = (currentPct || '--') + ' 匹配度';
+            rowEl.style.fontSize = '16px';
+            rowEl.style.fontWeight = '800';
+            rowEl.style.color = '#1c1c1a';
+            rowEl.style.display = 'inline-flex';
+            rowEl.style.alignItems = 'center';
+            rowEl.style.justifyContent = 'center';
+            rowEl.style.visibility = 'visible';
+            rowEl.style.opacity = '1';
+          }
+
+          var hitEl = cloneDoc.getElementById('r-hit');
+          if (hitEl && (!hitEl.textContent || !hitEl.textContent.trim())) {
+            hitEl.textContent = hitText || hitEl.getAttribute('data-hit') || '';
+          }
+        }
+      };
+    }
+
+    html2canvas(shareCard, captureOptions()).then(function(canvas) {
+      onSuccess(canvas);
+    }).catch(function() {
+      var avatarEl = document.getElementById('r-avatar-emoji');
+      var img = avatarEl ? avatarEl.querySelector('img') : null;
+      var fallbackEmoji = avatarEl ? (avatarEl.getAttribute('data-fallback-emoji') || '🙂') : '🙂';
+
+      if (!img) { onFail(); return; }
+
+      img.remove();
+      avatarEl.textContent = fallbackEmoji;
+
+      html2canvas(shareCard, captureOptions()).then(function(canvas2) {
+        onSuccess(canvas2);
+      }).catch(function() {
+        onFail();
+      });
+    });
+  }
+
+  // Final fallback: draw percentage directly on canvas to bypass html2canvas text loss.
+  function reinforceCanvasMatchText(canvas) {
+    if (!canvas) return;
+
+    var res = latestRes || calcResult();
+    var pctText = (res && typeof res.pct !== 'undefined') ? (res.pct + '%') : '';
+    if (!pctText) return;
+
+    var shareCard = document.getElementById('xbti-share-card');
+    var rowEl = document.querySelector('.r-match-row');
+    if (!shareCard || !rowEl) return;
+
+    var shareRect = shareCard.getBoundingClientRect();
+    var rowRect = rowEl.getBoundingClientRect();
+    var rawScale = shareRect.width > 0 ? (canvas.width / shareRect.width) : 1;
+    var dpr = window.devicePixelRatio || 1;
+    var scale = rawScale;
+
+    // html2canvas scale can include DPR on some devices; normalize to avoid drift.
+    if (rawScale > 2.5 && dpr > 1) {
+      scale = rawScale / dpr;
+    }
+
+    var xBase = (rowRect.left - shareRect.left) + 14;
+    var yBase = (rowRect.top - shareRect.top) + (rowRect.height * 0.65);
+
+    var x = xBase * scale;
+    var y = yBase * scale;
+
+    var ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    ctx.save();
+    ctx.fillStyle = '#1c1c1a';
+    ctx.font = '800 ' + Math.round(16 * scale) + 'px Sora, sans-serif';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(pctText, x, y);
+    ctx.restore();
+  }
+
+  function saveImage() {
+    var ov = document.getElementById('save-ov');
+    ov.classList.add('show', 'loading');
+    var qrWrap = document.getElementById('qr-footer');
+    syncShareCardData();
+    genQR(function() {
+      qrWrap.style.display = 'flex';
+      loadJSFallback([
+        'https://cdn.bootcdn.net/ajax/libs/html2canvas/1.4.1/html2canvas.min.js',
+        'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js',
+        'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'
+      ], 'html2canvas', function() {
+        setTimeout(function() {
+          var shareCard = document.getElementById('xbti-share-card');
+          syncShareCardData();
+          waitForImages(shareCard, 3000).then(function() {
+            captureShareCard(function(canvas) {
+              qrWrap.style.display = 'none';
+              // Keep exported text fully DOM-based to avoid device-dependent canvas drift.
+              window._xbtiCanvas = canvas;
+              document.getElementById('save-img').src = canvas.toDataURL('image/png');
+              ov.classList.remove('loading');
+            }, function() {
+              qrWrap.style.display = 'none';
+              ov.classList.remove('show', 'loading');
+              alert('生成失败，请截图保存');
+            });
+          });
+        }, 100);
+      }, function() {
+        qrWrap.style.display = 'none';
+        ov.classList.remove('show', 'loading');
+        alert('分享图组件加载失败，请检查网络后重试');
+      });
+    });
+  }
+
+  function downloadImage() {
+    if (!window._xbtiCanvas) return;
+    var dataUrl;
+    try {
+      dataUrl = window._xbtiCanvas.toDataURL('image/png');
+    } catch (e) {
+      alert('图片受跨域限制，建议长按预览图保存');
+      return;
+    }
+
+    var link = document.createElement('a');
+    link.download = 'CBTI灵魂镜像测试结果.png';
+    link.href = dataUrl;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  document.getElementById('start-btn').addEventListener('click', function() {
+    showScreen('quiz-screen');
+    renderQ();
+  });
+})();
+</script>
+
+</body>
+</html>
